@@ -63,7 +63,7 @@ Without any keys the app runs in **demo mode**: everything works, but changes ar
 ## Step by step: connect the database (Supabase)
 
 1. Create a free account at **supabase.com** and click **New project**. Choose the region closest to Bahrain (for example Frankfurt or Mumbai) and save the database password somewhere safe.
-2. In the project, open **SQL Editor → New query**, paste the whole file `supabase/migrations/20261014000000_init.sql` and click **Run**.
+2. In the project, open **SQL Editor → New query**, paste each file in `supabase/migrations/` (in name order) and click **Run**.
 3. Open another new query, paste `supabase/seed.sql` and click **Run**. This loads the 20 influencers, the outdoor sites, the 8 media outlets and the PR packages.
 4. Go to **Project Settings → API** and copy the **Project URL** and the **anon public** key.
 5. In the project folder, copy `.env.example` to a new file called `.env.local` and paste the two values:
