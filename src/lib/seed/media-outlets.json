@@ -1,0 +1,146 @@
+[
+  {
+    "id": "gdn",
+    "name": "Gulf Daily News",
+    "kind": "daily",
+    "language": "English",
+    "about": "English-language daily newspaper.",
+    "columnCmRate": 9,
+    "web": [
+      220,
+      140
+    ],
+    "social": [
+      300,
+      150
+    ]
+  },
+  {
+    "id": "dt",
+    "name": "Daily Tribune",
+    "kind": "daily",
+    "language": "English",
+    "about": "English-language daily newspaper.",
+    "columnCmRate": 6,
+    "web": [
+      150,
+      90
+    ],
+    "social": [
+      200,
+      100
+    ]
+  },
+  {
+    "id": "akh",
+    "name": "Akhbar Al Khaleej",
+    "nameAr": "أخبار الخليج",
+    "kind": "daily",
+    "language": "Arabic",
+    "about": "Arabic-language daily newspaper.",
+    "columnCmRate": 10,
+    "web": [
+      240,
+      150
+    ],
+    "social": [
+      320,
+      160
+    ]
+  },
+  {
+    "id": "ayam",
+    "name": "Al Ayam",
+    "nameAr": "الأيام",
+    "kind": "daily",
+    "language": "Arabic",
+    "about": "Arabic-language daily newspaper.",
+    "columnCmRate": 10,
+    "web": [
+      240,
+      150
+    ],
+    "social": [
+      320,
+      160
+    ]
+  },
+  {
+    "id": "bilad",
+    "name": "Al Bilad",
+    "nameAr": "البلاد",
+    "kind": "daily",
+    "language": "Arabic",
+    "about": "Arabic-language daily newspaper.",
+    "columnCmRate": 7,
+    "web": [
+      160,
+      100
+    ],
+    "social": [
+      220,
+      110
+    ]
+  },
+  {
+    "id": "watan",
+    "name": "Al Watan",
+    "nameAr": "الوطن",
+    "kind": "daily",
+    "language": "Arabic",
+    "about": "Arabic-language daily newspaper.",
+    "columnCmRate": 8,
+    "web": [
+      180,
+      110
+    ],
+    "social": [
+      250,
+      120
+    ]
+  },
+  {
+    "id": "btm",
+    "name": "Bahrain This Month",
+    "kind": "monthly",
+    "language": "English",
+    "about": "Monthly lifestyle and business magazine.",
+    "magazine": {
+      "full": 950,
+      "half": 550,
+      "dps": 1700,
+      "ifc": 1350,
+      "obc": 1600
+    },
+    "web": [
+      200,
+      120
+    ],
+    "social": [
+      400,
+      200
+    ]
+  },
+  {
+    "id": "fact",
+    "name": "Fact Bahrain",
+    "kind": "monthly",
+    "language": "English",
+    "about": "Monthly food, lifestyle and events magazine.",
+    "magazine": {
+      "full": 900,
+      "half": 500,
+      "dps": 1600,
+      "ifc": 1250,
+      "obc": 1500
+    },
+    "web": [
+      300,
+      200
+    ],
+    "social": [
+      500,
+      250
+    ]
+  }
+]

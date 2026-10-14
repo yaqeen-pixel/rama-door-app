@@ -1,0 +1,270 @@
+[
+  {
+    "id": 1,
+    "name": "Seef District LED",
+    "format": "LED screen",
+    "area": "Seef",
+    "lat": 26.2335,
+    "lng": 50.5345,
+    "size": "12 × 4 m",
+    "faces": "1 face, 8 advertisers per loop",
+    "dailyViews": 120000,
+    "weeklyPrice": 2400,
+    "lighting": "On 6am to 2am",
+    "bookedWeeks": [
+      2,
+      3,
+      7
+    ]
+  },
+  {
+    "id": 2,
+    "name": "King Faisal Highway billboard",
+    "format": "Billboard",
+    "area": "Manama",
+    "lat": 26.239,
+    "lng": 50.572,
+    "size": "18 × 6 m",
+    "faces": "2 faces",
+    "dailyViews": 95000,
+    "weeklyPrice": 1500,
+    "lighting": "Front-lit at night",
+    "bookedWeeks": [
+      0,
+      1
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Bahrain Bay unipole",
+    "format": "Unipole",
+    "area": "Manama",
+    "lat": 26.2445,
+    "lng": 50.585,
+    "size": "14 × 5 m",
+    "faces": "Double-sided",
+    "dailyViews": 80000,
+    "weeklyPrice": 1350,
+    "lighting": "Front-lit at night",
+    "bookedWeeks": [
+      5,
+      6
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Sheikh Khalifa bin Salman Highway LED",
+    "format": "LED screen",
+    "area": "Isa Town",
+    "lat": 26.175,
+    "lng": 50.555,
+    "size": "10 × 4 m",
+    "faces": "1 face, 6 advertisers per loop",
+    "dailyViews": 140000,
+    "weeklyPrice": 2100,
+    "lighting": "On 24 hours",
+    "bookedWeeks": [
+      0,
+      4,
+      5,
+      9
+    ]
+  },
+  {
+    "id": 5,
+    "name": "City Centre mall screen",
+    "format": "Mall screen",
+    "area": "Seef",
+    "lat": 26.231,
+    "lng": 50.552,
+    "size": "4 × 2.5 m",
+    "faces": "Indoor, 20 second loop",
+    "dailyViews": 45000,
+    "weeklyPrice": 650,
+    "lighting": "Mall hours",
+    "bookedWeeks": []
+  },
+  {
+    "id": 6,
+    "name": "Juffair bridge banner",
+    "format": "Bridge banner",
+    "area": "Juffair",
+    "lat": 26.212,
+    "lng": 50.603,
+    "size": "30 × 3 m",
+    "faces": "2 faces",
+    "dailyViews": 70000,
+    "weeklyPrice": 1100,
+    "lighting": "Not lit",
+    "bookedWeeks": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Airport Road billboard",
+    "format": "Billboard",
+    "area": "Muharraq",
+    "lat": 26.256,
+    "lng": 50.628,
+    "size": "18 × 6 m",
+    "faces": "1 face",
+    "dailyViews": 88000,
+    "weeklyPrice": 1300,
+    "lighting": "Front-lit at night",
+    "bookedWeeks": [
+      8
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Airport arrivals screens",
+    "format": "Airport screen",
+    "area": "Muharraq",
+    "lat": 26.27,
+    "lng": 50.637,
+    "size": "6 screens, 3 × 2 m",
+    "faces": "Arrivals hall",
+    "dailyViews": 25000,
+    "weeklyPrice": 900,
+    "lighting": "On 24 hours",
+    "bookedWeeks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Riffa Views unipole",
+    "format": "Unipole",
+    "area": "Riffa",
+    "lat": 26.115,
+    "lng": 50.56,
+    "size": "12 × 4 m",
+    "faces": "Double-sided",
+    "dailyViews": 40000,
+    "weeklyPrice": 800,
+    "lighting": "Front-lit at night",
+    "bookedWeeks": []
+  },
+  {
+    "id": 10,
+    "name": "Hamad Town roundabout billboard",
+    "format": "Billboard",
+    "area": "Hamad Town",
+    "lat": 26.115,
+    "lng": 50.505,
+    "size": "12 × 4 m",
+    "faces": "1 face",
+    "dailyViews": 55000,
+    "weeklyPrice": 700,
+    "lighting": "Front-lit at night",
+    "bookedWeeks": [
+      3
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Budaiya Highway LED",
+    "format": "LED screen",
+    "area": "Budaiya",
+    "lat": 26.215,
+    "lng": 50.482,
+    "size": "8 × 4 m",
+    "faces": "1 face, 6 advertisers per loop",
+    "dailyViews": 60000,
+    "weeklyPrice": 1200,
+    "lighting": "On 6am to 1am",
+    "bookedWeeks": [
+      6,
+      7
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Sitra Causeway billboard",
+    "format": "Billboard",
+    "area": "Sitra",
+    "lat": 26.16,
+    "lng": 50.612,
+    "size": "18 × 6 m",
+    "faces": "2 faces",
+    "dailyViews": 75000,
+    "weeklyPrice": 1000,
+    "lighting": "Front-lit at night",
+    "bookedWeeks": []
+  },
+  {
+    "id": 13,
+    "name": "Amwaj Islands mall screen",
+    "format": "Mall screen",
+    "area": "Amwaj",
+    "lat": 26.288,
+    "lng": 50.66,
+    "size": "3 × 2 m",
+    "faces": "Indoor, 15 second loop",
+    "dailyViews": 12000,
+    "weeklyPrice": 380,
+    "lighting": "Mall hours",
+    "bookedWeeks": [
+      1
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Sakhir circuit highway unipole",
+    "format": "Unipole",
+    "area": "Sakhir",
+    "lat": 26.035,
+    "lng": 50.515,
+    "size": "14 × 5 m",
+    "faces": "Double-sided",
+    "dailyViews": 30000,
+    "weeklyPrice": 750,
+    "lighting": "Front-lit at night",
+    "bookedWeeks": []
+  },
+  {
+    "id": 15,
+    "name": "Saar shopping strip LED",
+    "format": "LED screen",
+    "area": "Saar",
+    "lat": 26.19,
+    "lng": 50.495,
+    "size": "6 × 3 m",
+    "faces": "1 face, 8 advertisers per loop",
+    "dailyViews": 35000,
+    "weeklyPrice": 600,
+    "lighting": "On 6am to midnight",
+    "bookedWeeks": [
+      10,
+      11
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Diplomatic Area bus shelters",
+    "format": "Bus shelters",
+    "area": "Manama",
+    "lat": 26.237,
+    "lng": 50.596,
+    "size": "10 shelters, 1.2 × 1.8 m",
+    "faces": "Backlit panels",
+    "dailyViews": 50000,
+    "weeklyPrice": 450,
+    "lighting": "Backlit at night",
+    "bookedWeeks": [
+      2
+    ]
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "key": "release",
+    "label": "Press release",
+    "price": 450,
+    "description": "Written in Arabic and English, sent to all eight outlets, with a coverage report two weeks later."
+  },
+  {
+    "key": "interview",
+    "label": "Media interview",
+    "price": 600,
+    "description": "RAMA pitches your spokesperson and arranges one print or online interview."
+  },
+  {
+    "key": "conference",
+    "label": "Press conference",
+    "price": 2500,
+    "description": "Venue, media invitations, press kit, photographer and a coverage report."
+  },
+  {
+    "key": "retainer",
+    "label": "Monthly PR retainer",
+    "price": 900,
+    "description": "Ongoing press relations: two releases, media monitoring and a monthly report."
+  }
+]
