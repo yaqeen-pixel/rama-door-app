@@ -4,6 +4,16 @@ export type Creator = {
   nickname: string | null;
   /** 12 prices in BD, see lib/seed/creators.ts for the order. */
   rates: (number | null)[] | null;
+  /** Instagram details, synced from the "Influencers IG - INF Profile" sheet. */
+  username?: string | null;
+  displayName?: string | null;
+  bio?: string | null;
+  followers?: number | null;
+  following?: number | null;
+  posts?: number | null;
+  profileUrl?: string | null;
+  /** Profile photo stored in Supabase Storage. */
+  photoUrl?: string | null;
 };
 
 export type Campaign = {

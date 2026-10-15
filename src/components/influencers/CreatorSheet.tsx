@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useStore } from "../store";
 import { Portrait, Seg, Sheet } from "../ui";
-import { bd, firstName } from "@/lib/format";
+import { bd, compact, firstName } from "@/lib/format";
 import { RATE_SCOPES, maxRate, minRate, rateIndex, rateLabel, type PackageChoice } from "@/lib/pricing";
 import type { Creator } from "@/lib/types";
 
@@ -41,11 +41,26 @@ export default function CreatorSheet({ creator: c, onClose }: { creator: Creator
       <div className="phead">
         <Portrait creator={c} />
         <div>
-          <h2>{c.name}</h2>
+          <h2 dir="auto">{c.name}</h2>
+          {c.displayName && c.displayName !== c.name && <p className="h" dir="auto">{c.displayName}</p>}
           {c.nickname && <p className="h" lang="ar">{c.nickname}</p>}
-          <p className="h">{minRate(c) != null ? `Packages from ${bd(minRate(c)!)} to ${bd(maxRate(c)!)}` : "Price on request"}</p>
+          {c.username && c.profileUrl && (
+            <p className="h"><a className="iglink" href={c.profileUrl} target="_blank" rel="noopener noreferrer">@{c.username} on Instagram ↗</a></p>
+          )}
+          <p className="h">{minRate(c) != null ? `Packages from ${bd(minRate(c)!)} to ${bd(maxRate(c)!)}` : "Not on the RAMA rate card yet"}</p>
         </div>
       </div>
+
+      {c.username && (
+        <>
+          <div className="facts num">
+            <div><b>{c.followers != null ? compact(c.followers) : "—"}</b><span>Followers</span></div>
+            <div><b>{c.following != null ? compact(c.following) : "—"}</b><span>Following</span></div>
+            <div><b>{c.posts != null ? compact(c.posts) : "—"}</b><span>Posts</span></div>
+          </div>
+          {c.bio && <p className="bio" dir="auto">{c.bio}</p>}
+        </>
+      )}
 
       {c.rates ? (
         <>
@@ -86,9 +101,8 @@ export default function CreatorSheet({ creator: c, onClose }: { creator: Creator
           </form>
         </>
       ) : (
-        <div className="empty" style={{ marginTop: 24 }}><b>No prices on the rate card yet</b><span>Ask the RAMA team for a quote for {firstName(c.name)}.</span></div>
+        <div className="empty" style={{ marginTop: 24 }}><b>No RAMA prices for this account yet</b><span>The RAMA team can get you a quote for {c.username ? `@${c.username}` : firstName(c.name)}.</span></div>
       )}
-      <div className="blk"><h3>Audience and platforms</h3><div className="empty"><span>Followers, engagement and audience breakdown will appear here once the influencer database is added.</span></div></div>
     </Sheet>
   );
 }

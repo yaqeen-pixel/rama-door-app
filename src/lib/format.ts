@@ -1,5 +1,6 @@
 export const bd = (n: number) => "BD " + Math.round(n).toLocaleString("en-US");
-export const compact = (n: number) => (n >= 1000 ? Math.round(n / 1000) + "K" : String(n));
+export const compact = (n: number) =>
+  n >= 1e6 ? (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(/\.0$/, "") + "M" : n >= 1000 ? Math.round(n / 1000) + "K" : String(n);
 export const firstName = (name: string) => name.split(" ")[0];
 export const uid = (prefix: string) => prefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 export const fmtDate = (d: Date, opts: Intl.DateTimeFormatOptions = { day: "numeric", month: "short", year: "numeric" }) =>

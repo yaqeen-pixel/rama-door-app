@@ -457,3 +457,11 @@ a.btn{text-decoration:none}
   .side .grp{order:1;width:100%}
   .sub a{white-space:nowrap}
 }
+/* Instagram details */
+.handle{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.tile .nm b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.ratebadge{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:var(--inf);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.catsep{width:1.5px;align-self:stretch;background:var(--rule);margin:4px 6px;flex:none}
+.iglink{color:var(--inf);font-weight:600;text-decoration:none}
+.iglink:hover{text-decoration:underline}
+.bio{white-space:pre-line;color:var(--ink-2);line-height:1.6;unicode-bidi:plaintext}

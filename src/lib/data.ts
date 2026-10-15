@@ -8,9 +8,16 @@ import type { Campaign, Creator, InsertionOrder, Offer, OutdoorBooking, OutdoorS
 export async function getCreators(): Promise<Creator[]> {
   const sb = createClient();
   if (!sb) return CREATORS;
-  const { data, error } = await sb.from("creators").select("id,name,nickname,rates").order("name");
+  const { data, error } = await sb
+    .from("creators")
+    .select("id,name,nickname,rates,username,display_name,bio,followers,following,posts,profile_url,photo_url")
+    .order("name");
   if (error || !data) return CREATORS;
-  return data as Creator[];
+  return data.map((c) => ({
+    id: c.id, name: c.name, nickname: c.nickname, rates: c.rates,
+    username: c.username, displayName: c.display_name, bio: c.bio, followers: c.followers,
+    following: c.following, posts: c.posts, profileUrl: c.profile_url, photoUrl: c.photo_url,
+  }));
 }
 
 export async function getOutdoorSites(): Promise<OutdoorSite[]> {

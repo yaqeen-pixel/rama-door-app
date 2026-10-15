@@ -1,21 +1,34 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import type { Creator } from "@/lib/types";
 
 const DUO: [string, string][] = [["#FBDADB","#9E1519"],["#E3E7EE","#1B2A3F"],["#FCEBC6","#6E4B00"],["#D5EAF2","#0D3E52"],["#F2E1D5","#7A3A12"],["#E6E2D6","#3F3A2E"],["#F7D7E6","#7E1F4E"],["#D9EEDF","#1D5B36"]];
 
 export function initials(name: string) {
-  const parts = name.split(/\s+/).filter((w) => !/^(Al|Bu)$/i.test(w));
-  return ((parts[0]?.[0] ?? "") + (parts[1]?.[0] ?? "")).toUpperCase();
+  const letters = name
+    .split(/[\s|\-–•/()]+/)
+    .filter((w) => w && !/^(Al|Bu)$/i.test(w))
+    .map((w) => w.match(/\p{L}/u)?.[0])
+    .filter(Boolean) as string[];
+  if (!letters.length) return "?";
+  // Arabic letters change shape when set apart, so Arabic names show a single letter.
+  if (/[\u0600-\u06FF]/.test(letters[0])) return letters[0];
+  return letters.slice(0, 2).join("").toUpperCase();
 }
 
 /** Arch-shaped creator portrait. Uses the photo when the database has one, otherwise initials. */
-export function Portrait({ creator, className = "", photo, children }: { creator: Creator; className?: string; photo?: string; children?: ReactNode }) {
+export function Portrait({ creator, className = "", children }: { creator: Creator; className?: string; children?: ReactNode }) {
   const [bg, fg] = DUO[(creator.id - 1) % DUO.length];
+  const [broken, setBroken] = useState(false);
+  const photo = !broken ? creator.photoUrl : null;
   return (
     <div className={`portrait ${className}`} style={{ background: bg, color: fg, ["--ring" as string]: fg + "26" }}>
-      {photo ? <img src={photo} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} /> : <span className="ini">{initials(creator.name)}</span>}
+      {photo ? (
+        <img src={photo} alt="" loading="lazy" onError={() => setBroken(true)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+      ) : (
+        <span className="ini">{initials(creator.name)}</span>
+      )}
       {children}
     </div>
   );
