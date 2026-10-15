@@ -7,7 +7,7 @@ import { useStore } from "./store";
 
 export default function Sidebar() {
   const path = usePathname();
-  const { offers, bookings, ioLines, orders, mode, email } = useStore();
+  const { offers, bookings, ioLines, orders, mode, email, selected, briefs } = useStore();
   const openOffers = offers.filter((o) => o.status === "Pending" || o.status === "Countered").length;
   const service = path.split("/")[1];
   const sub = (href: string, label: string, count?: number) => (
@@ -22,7 +22,7 @@ export default function Sidebar() {
       <nav className="grp" aria-label="Services">
         <small>Services</small>
         {svc("/influencers", "Influencers", "var(--inf)")}
-        {service === "influencers" && <div className="sub">{sub("/influencers", "Discover")}{sub("/influencers/campaigns", "Campaigns")}{sub("/influencers/offers", "Offers", openOffers)}</div>}
+        {service === "influencers" && <div className="sub">{sub("/influencers", "Discover", selected.length)}{sub("/influencers/briefs", "Briefs", briefs.length)}{sub("/influencers/campaigns", "Campaigns")}{sub("/influencers/offers", "Offers", openOffers)}</div>}
         {svc("/outdoors", "Outdoors", "var(--out)")}
         {service === "outdoors" && <div className="sub">{sub("/outdoors", "Explore map")}{sub("/outdoors/bookings", "Bookings", bookings.length)}</div>}
         {svc("/pr", "PR and media", "var(--pr)")}

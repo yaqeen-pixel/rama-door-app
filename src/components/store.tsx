@@ -5,6 +5,8 @@ import * as actions from "@/app/actions";
 import { bd, firstName, uid } from "@/lib/format";
 import { VAT_RATE } from "@/lib/pricing";
 import type { Workspace } from "@/lib/data";
+import type { Brief } from "@/lib/brief";
+import { createClient as createBrowserClient } from "@/lib/supabase/client";
 import type { Campaign, Creator, InsertionOrder, IoLine, Offer, OfferMessage, OutdoorBooking, OutdoorSite, Outlet, PrPackage } from "@/lib/types";
 
 export type Catalogue = { creators: Creator[]; sites: OutdoorSite[]; outlets: Outlet[]; packages: PrPackage[] };
@@ -19,6 +21,13 @@ type Store = Catalogue & {
   bookings: OutdoorBooking[];
   orders: InsertionOrder[];
   ioLines: IoLine[];
+  briefs: Brief[];
+  profile?: Workspace["profile"];
+  /** Creators picked on Discover for the next brief. */
+  selected: number[];
+  toggleSelected: (id: number) => void;
+  setSelected: (ids: number[]) => void;
+  submitBrief: (b: Omit<Brief, "id" | "createdAt" | "attachmentPath">, file: File | null) => Promise<Brief | null>;
   typing: Record<string, boolean>;
   toast: string | null;
   notify: (text: string) => void;
@@ -53,6 +62,8 @@ export function StoreProvider({ catalogue, workspace, children }: { catalogue: C
   const [orders, setOrders] = useState(workspace.orders);
   const [sites, setSites] = useState(catalogue.sites);
   const [ioLines, setIoLines] = useState<IoLine[]>([]);
+  const [briefs, setBriefs] = useState<Brief[]>(workspace.briefs);
+  const [selected, setSelectedState] = useState<number[]>([]);
   const [typing, setTyping] = useState<Record<string, boolean>>({});
   const [toast, setToast] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>();
@@ -193,6 +204,31 @@ export function StoreProvider({ catalogue, workspace, children }: { catalogue: C
       notify("Added to your insertion order");
     },
     removeIoLine(id) { setIoLines((l) => l.filter((x) => x.id !== id)); },
+    briefs,
+    profile: workspace.profile,
+    selected,
+    toggleSelected(id) { setSelectedState((l) => (l.includes(id) ? l.filter((x) => x !== id) : [...l, id])); },
+    setSelected(ids) { setSelectedState(ids); },
+    async submitBrief(b, file) {
+      let attachmentPath: string | undefined;
+      if (file && !demo) {
+        const sb = createBrowserClient();
+        const { data: { user } } = (await sb?.auth.getUser()) ?? { data: { user: null } };
+        if (sb && user) {
+          const path = `${user.id}/${uid("f")}-${file.name.replace(/[^\w.\-]+/g, "_")}`;
+          const { error } = await sb.storage.from("brief-files").upload(path, file, { contentType: file.type || undefined });
+          if (error) { notify(`Could not upload the file: ${error.message}`); return null; }
+          attachmentPath = path;
+        }
+      }
+      const res = await actions.saveBrief({ ...b, attachmentPath });
+      if (res.error) { notify(`Could not save the brief: ${res.error}`); return null; }
+      const saved: Brief = { ...b, attachmentPath, id: res.data?.id ?? uid("br"), createdAt: new Date().toISOString() };
+      setBriefs((l) => [saved, ...l]);
+      if (b.status !== "Draft") setSelectedState([]);
+      notify(b.status === "Draft" ? "Draft saved" : "Brief sent to RAMA");
+      return saved;
+    },
     async sendIo() {
       if (!ioLines.length) return null;
       const sub = ioLines.reduce((t, l) => t + l.total, 0);

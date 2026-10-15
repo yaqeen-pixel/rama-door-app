@@ -9,7 +9,8 @@ import { RATE_SCOPES, maxRate, minRate, rateIndex, rateLabel, type PackageChoice
 import type { Creator } from "@/lib/types";
 
 export default function CreatorSheet({ creator: c, onClose }: { creator: Creator; onClose: () => void }) {
-  const { campaigns, sendOffer, mode } = useStore();
+  const { campaigns, sendOffer, mode, selected, toggleSelected } = useStore();
+  const picked = selected.includes(c.id);
   const router = useRouter();
   const [p, setP] = useState<PackageChoice>({ video: true, snapchat: true, ads: false, twoRounds: false });
   const idx = rateIndex(p);
@@ -48,6 +49,10 @@ export default function CreatorSheet({ creator: c, onClose }: { creator: Creator
             <p className="h"><a className="iglink" href={c.profileUrl} target="_blank" rel="noopener noreferrer">@{c.username} on Instagram ↗</a></p>
           )}
           <p className="h">{minRate(c) != null ? `Packages from ${bd(minRate(c)!)} to ${bd(maxRate(c)!)}` : "Not on the RAMA rate card yet"}</p>
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 12 }}>
+            <button type="button" className={`btn sm ${picked ? "line" : "inf"}`} onClick={() => toggleSelected(c.id)}>{picked ? "✓ Added to brief" : "+ Add to brief"}</button>
+            {picked && <button type="button" className="btn sm" onClick={() => { onClose(); router.push("/influencers/brief"); }}>Submit brief ({selected.length})</button>}
+          </div>
         </div>
       </div>
 

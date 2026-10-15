@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { useStore } from "../store";
 import { PageHead, Portrait, Sheet } from "../ui";
 import CreatorSheet from "./CreatorSheet";
@@ -154,7 +155,7 @@ function FilterPanel({ creators, f, set }: { creators: Creator[]; f: Filters; se
 
 /* ---------------- page ---------------- */
 export default function Discover() {
-  const { creators, campaigns, offers } = useStore();
+  const { creators, campaigns, offers, selected, toggleSelected, setSelected } = useStore();
   const [f, setF] = useState<Filters>(EMPTY);
   const [sort, setSort] = useState("followers");
   const [open, setOpen] = useState<Creator | null>(null);
@@ -239,8 +240,13 @@ export default function Discover() {
             <div className="grid">
               {list.map((c) => {
                 const p = f.pkg !== "any" ? packagePrice(c, f.pkg) : minRate(c);
+                const on = selected.includes(c.id);
                 return (
-                  <button key={c.id} className="tile" onClick={() => setOpen(c)} aria-label={c.name}>
+                  <div key={c.id} className={`tilewrap${on ? " picked" : ""}`}>
+                  <button className="pick" onClick={() => toggleSelected(c.id)} aria-pressed={on} aria-label={on ? `Remove ${c.name} from the brief` : `Add ${c.name} to a brief`}>
+                    {on ? "✓ Selected" : "+ Select"}
+                  </button>
+                  <button className="tile" onClick={() => setOpen(c)} aria-label={c.name}>
                     <Portrait creator={c}>
                       {minRate(c) != null && <span className="ratebadge">Rate card</span>}
                       <div className="plats">{(c.platforms ?? ["instagram"]).map((k) => <span key={k}>{PLATFORMS.find((x) => x.key === k)?.short ?? k}</span>)}</div>
@@ -251,6 +257,7 @@ export default function Discover() {
                       {p != null ? <span>from <b>{bd(p)}</b></span> : <span>Quote on request</span>}
                     </div>
                   </button>
+                  </div>
                 );
               })}
             </div>
@@ -270,6 +277,19 @@ export default function Discover() {
             <button className="btn inf" onClick={() => setPanel(false)}>Show {list.length} accounts</button>
           </div>
         </Sheet>
+      )}
+      {selected.length > 0 && (
+        <div className="tray" role="region" aria-label="Selected creators">
+          <div className="tray-in">
+            <div className="tray-avs">
+              {selected.slice(0, 5).map((id) => { const c = creators.find((x) => x.id === id); return c ? <Portrait key={id} creator={c} className="mini" /> : null; })}
+              {selected.length > 5 && <span className="tray-more num">+{selected.length - 5}</span>}
+            </div>
+            <div className="tray-txt"><b className="num">{selected.length} creator{selected.length > 1 ? "s" : ""} selected</b><span>Send them one brief with your dates, content and budget.</span></div>
+            <button className="lnk" onClick={() => setSelected([])}>Clear</button>
+            <Link className="btn inf" href="/influencers/brief">Submit brief</Link>
+          </div>
+        </div>
       )}
       {open && <CreatorSheet creator={open} onClose={() => setOpen(null)} />}
     </>

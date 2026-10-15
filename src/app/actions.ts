@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { weekZero, addDays } from "@/lib/format";
 import { VAT_RATE } from "@/lib/pricing";
 import type { Campaign, IoLine, OfferMessage, OfferStatus } from "@/lib/types";
+import type { Brief } from "@/lib/brief";
 
 /**
  * Server actions. Each one writes to Supabase when the app is connected and the
@@ -83,4 +84,34 @@ export async function sendInsertionOrder(lines: IoLine[]): Promise<Result<{ id: 
   if (error) return { persisted: false, error: error.message };
   await s.sb.from("insertion_order_lines").insert(lines.map((l) => ({ order_id: data.id, outlet: l.outlet, description: l.description, run_dates: l.when, deadline: l.deadline ?? null, total: l.total })));
   return { persisted: true, data: { id: data.id, number: data.number } };
+}
+
+/* ---------------- Influencer briefs ---------------- */
+
+export async function saveBrief(brief: Omit<Brief, "id" | "createdAt">): Promise<Result<{ id: string }>> {
+  const s = await session();
+  if (!s) return { persisted: false };
+  const row = {
+    campaign_name: brief.campaignName, budget: brief.budget ? Number(brief.budget) : null,
+    company_name: brief.companyName, email: brief.email, phone: brief.phone,
+    brief_mode: brief.mode, brief_languages: brief.languages, brief_text: brief.text || null,
+    attachment_path: brief.attachmentPath ?? null, attachment_name: brief.attachmentName ?? null,
+    default_content: brief.defaultContent,
+    submission_deadline: brief.submissionDeadline || null, posting_date: brief.postingDate || null, posting_time: brief.postingTime || null,
+    dress_code: brief.dressCode, dress_code_comments: brief.dressCodeComments || null, additional_notes: brief.notes || null,
+    estimate: brief.estimate, status: brief.status,
+  };
+  const { data, error } = await s.sb.from("briefs").insert(row).select("id").single();
+  if (error) return { persisted: false, error: error.message };
+  if (brief.creators.length) {
+    const { error: cErr } = await s.sb.from("brief_creators").insert(brief.creators.map((c) => ({
+      brief_id: data.id, creator_id: c.creatorId, platforms: c.platforms, content_types: c.content,
+      specific_brief: c.specificBrief || null, video_quality: c.videoQuality, location_type: c.locationType, sponsored_ads: c.sponsoredAds,
+      submission_deadline: c.submissionDeadline || null, posting_date: c.postingDate || null, posting_time: c.postingTime || null,
+    })));
+    if (cErr) return { persisted: false, error: cErr.message };
+  }
+  // Remember company details for next time.
+  await s.sb.from("profiles").update({ company_name: brief.companyName, phone: brief.phone }).eq("id", s.user.id);
+  return { persisted: true, data: { id: data.id } };
 }

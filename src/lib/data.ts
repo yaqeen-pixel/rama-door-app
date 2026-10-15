@@ -2,6 +2,7 @@ import "server-only";
 import { createClient } from "./supabase/server";
 import { CREATORS, OUTDOOR_SITES, OUTLETS, PR_PACKAGES } from "./seed";
 import { weekZero } from "./format";
+import type { Brief } from "./brief";
 import type { Campaign, Creator, InsertionOrder, Offer, OutdoorBooking, OutdoorSite, Outlet, PrPackage } from "./types";
 
 /* ---------------- Catalogue (public) ---------------- */
@@ -66,6 +67,9 @@ export type Workspace = {
   offers: Offer[];
   bookings: OutdoorBooking[];
   orders: InsertionOrder[];
+  briefs: Brief[];
+  /** Saved company details, used to prefill the brief form. */
+  profile?: { companyName?: string; phone?: string };
 };
 
 const DEMO_CAMPAIGNS: Campaign[] = [
@@ -75,16 +79,18 @@ const DEMO_CAMPAIGNS: Campaign[] = [
 
 export async function getWorkspace(): Promise<Workspace> {
   const sb = createClient();
-  if (!sb) return { mode: "demo", campaigns: DEMO_CAMPAIGNS, offers: [], bookings: [], orders: [] };
+  if (!sb) return { mode: "demo", campaigns: DEMO_CAMPAIGNS, offers: [], bookings: [], orders: [], briefs: [] };
   const { data: { user } } = await sb.auth.getUser();
-  if (!user) return { mode: "guest", campaigns: [], offers: [], bookings: [], orders: [] };
+  if (!user) return { mode: "guest", campaigns: [], offers: [], bookings: [], orders: [], briefs: [] };
 
   const w0 = weekZero().getTime();
-  const [c, o, b, io] = await Promise.all([
+  const [c, o, b, io, br, pf] = await Promise.all([
     sb.from("campaigns").select("*").order("created_at", { ascending: false }),
     sb.from("offers").select("*, offer_messages(*)").order("created_at", { ascending: false }),
     sb.from("outdoor_bookings").select("*").order("created_at", { ascending: false }),
     sb.from("insertion_orders").select("*, insertion_order_lines(*)").order("created_at", { ascending: false }),
+    sb.from("briefs").select("*, brief_creators(*)").order("created_at", { ascending: false }),
+    sb.from("profiles").select("company_name,phone").eq("id", user.id).maybeSingle(),
   ]);
   return {
     mode: "live",
@@ -96,5 +102,24 @@ export async function getWorkspace(): Promise<Workspace> {
     })),
     bookings: (b.data ?? []).map((r) => ({ id: r.id, siteId: r.site_id, total: r.total, status: r.status, weeks: (r.weeks as string[]).map((d) => Math.round((new Date(d + "T00:00").getTime() - w0) / (7 * 864e5))) })),
     orders: (io.data ?? []).map((r) => ({ id: r.id, number: r.number, total: r.total, status: r.status, lines: (r.insertion_order_lines ?? []).map((l: { id: string; outlet: string; description: string; run_dates: string | null; deadline: string | null; total: number }) => ({ id: l.id, outlet: l.outlet, description: l.description, when: l.run_dates ?? "", deadline: l.deadline ?? undefined, total: l.total })) })),
+    briefs: (br.data ?? []).map(briefFromRow),
+    profile: { companyName: pf.data?.company_name ?? undefined, phone: pf.data?.phone ?? undefined },
+  };
+}
+
+function briefFromRow(r: any): Brief {
+  return {
+    id: r.id, campaignName: r.campaign_name, budget: r.budget == null ? "" : String(r.budget), companyName: r.company_name,
+    email: r.email, phone: r.phone, mode: r.brief_mode, languages: r.brief_languages ?? [], text: r.brief_text ?? "",
+    attachmentName: r.attachment_name ?? undefined, attachmentPath: r.attachment_path ?? undefined,
+    defaultContent: { instagram: [], tiktok: [], snapchat: [], ...(r.default_content ?? {}) },
+    submissionDeadline: r.submission_deadline ?? "", postingDate: r.posting_date ?? "", postingTime: (r.posting_time ?? "").slice(0, 5),
+    dressCode: r.dress_code ?? [], dressCodeComments: r.dress_code_comments ?? "", notes: r.additional_notes ?? "",
+    estimate: r.estimate, status: r.status, createdAt: r.created_at,
+    creators: (r.brief_creators ?? []).map((c: any) => ({
+      creatorId: c.creator_id, platforms: c.platforms ?? [], content: { instagram: [], tiktok: [], snapchat: [], ...(c.content_types ?? {}) },
+      specificBrief: c.specific_brief ?? "", videoQuality: c.video_quality, locationType: c.location_type, sponsoredAds: c.sponsored_ads,
+      submissionDeadline: c.submission_deadline ?? "", postingDate: c.posting_date ?? "", postingTime: (c.posting_time ?? "").slice(0, 5),
+    })),
   };
 }
