@@ -72,6 +72,17 @@ function photoExpired(url: string) {
   return oe ? parseInt(oe, 16) * 1000 < Date.now() : false;
 }
 
+/** New accounts start with Instagram plus any platform their bio mentions. RAMA can edit this later. */
+function platformsFromBio(bio: string | null) {
+  const t = bio ?? "";
+  return [
+    "instagram",
+    ...(/tik ?tok|تيك ?توك/i.test(t) ? ["tiktok"] : []),
+    ...(/snap|👻|سناب/i.test(t) ? ["snapchat"] : []),
+    ...(/youtube|ytube|يوتيوب/i.test(t) ? ["youtube"] : []),
+  ];
+}
+
 function readRows(csv: string): Row[] {
   const [header, ...lines] = parseCsv(csv);
   if (!header) throw new Error("The sheet is empty.");
@@ -141,7 +152,7 @@ Deno.serve(async (req) => {
       };
       const hit = byUser.get(r.username.toLowerCase());
       if (hit) updates.push({ id: hit.id, ...fields });
-      else inserts.push({ name: r.displayName ?? `@${r.username}`, ...fields });
+      else inserts.push({ name: r.displayName ?? `@${r.username}`, platforms: platformsFromBio(r.bio), ...fields });
     }
 
     for (let i = 0; i < updates.length; i += 100) {

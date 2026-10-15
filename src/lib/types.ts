@@ -14,6 +14,10 @@ export type Creator = {
   profileUrl?: string | null;
   /** Profile photo stored in Supabase Storage. */
   photoUrl?: string | null;
+  /** Platforms the account posts on: instagram, tiktok, snapchat, youtube. */
+  platforms?: string[];
+  /** "creator" = a person, "page" = news, media or community account. */
+  accountType?: "creator" | "page";
 };
 
 export type Campaign = {

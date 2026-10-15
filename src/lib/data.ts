@@ -10,13 +10,14 @@ export async function getCreators(): Promise<Creator[]> {
   if (!sb) return CREATORS;
   const { data, error } = await sb
     .from("creators")
-    .select("id,name,nickname,rates,username,display_name,bio,followers,following,posts,profile_url,photo_url")
+    .select("id,name,nickname,rates,username,display_name,bio,followers,following,posts,profile_url,photo_url,platforms,account_type")
     .order("name");
   if (error || !data) return CREATORS;
   return data.map((c) => ({
     id: c.id, name: c.name, nickname: c.nickname, rates: c.rates,
     username: c.username, displayName: c.display_name, bio: c.bio, followers: c.followers,
     following: c.following, posts: c.posts, profileUrl: c.profile_url, photoUrl: c.photo_url,
+    platforms: c.platforms ?? ["instagram"], accountType: c.account_type ?? "creator",
   }));
 }
 

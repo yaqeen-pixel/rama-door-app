@@ -13,8 +13,9 @@ export function initials(name: string) {
     .filter(Boolean) as string[];
   if (!letters.length) return "?";
   // Arabic letters change shape when set apart, so Arabic names show a single letter.
-  if (/[\u0600-\u06FF]/.test(letters[0])) return letters[0];
-  return letters.slice(0, 2).join("").toUpperCase();
+  const pair = letters.slice(0, 2);
+  if (pair.some((l) => /[\u0600-\u06FF]/.test(l))) return letters[0];
+  return pair.join("").toUpperCase();
 }
 
 /** Arch-shaped creator portrait. Uses the photo when the database has one, otherwise initials. */
