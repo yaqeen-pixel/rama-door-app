@@ -29,7 +29,7 @@ export default function SiteSheet({ siteId, initialWeeks, onClose }: { siteId: n
       <div className="blk"><h3>Choose your weeks</h3>
         <div className="weeks num">{Array.from({ length: 12 }, (_, i) => {
           const booked = a.bookedWeeks.includes(i);
-          return <button key={i} type="button" className={`wkb${booked ? " bk" : ""}`} aria-pressed={pick.has(i)} disabled={booked} onClick={() => toggle(i)}><b>{weekLabel(i)}</b><small>{booked ? "Booked" : "Free"}</small></button>;
+          return <button key={i} type="button" className={`wkb${booked ? " taken" : ""}`} aria-pressed={pick.has(i)} disabled={booked} onClick={() => toggle(i)}><b>{weekLabel(i)}</b><small>{booked ? "Booked" : "Free"}</small></button>;
         })}</div>
       </div>
       <div className="total">
