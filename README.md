@@ -104,6 +104,27 @@ Brand requests arrive in `offers`, `campaigns`, `outdoor_bookings` and `insertio
 - `outdoor-sites.json`, the media outlet **rates** and `pr-packages.json`: **sample values** for the demo. Replace them with RAMA's real inventory and media agreements.
 - If you change the JSON files, run `npm run seed:sql` to regenerate `supabase/seed.sql`.
 
+## Automatic Instagram sync
+
+Creator details (followers, following, posts, bio, name and profile photo) come from the
+**"Influencers IG - INF Profile"** Google Sheet. The Supabase Edge Function `sync-instagram`
+(`supabase/functions/sync-instagram`) reads that sheet **every hour** and:
+
+- updates every creator whose Instagram username is in the sheet,
+- adds new usernames as creators (they appear under **All creators** until RAMA adds rate card prices),
+- copies profile photos into the `creator-photos` Storage bucket, because Instagram photo links expire after a few weeks.
+
+**Connect the sheet (one time):**
+1. In Google Sheets open the profile sheet, then **File → Share → Publish to web**.
+2. Choose the profile tab and **Comma-separated values (.csv)**, click **Publish** and copy the link.
+3. In Supabase go to **Edge Functions → Secrets**, add `SHEET_CSV_URL` and paste the link.
+
+The schedule lives in `supabase/migrations/20261015000100_instagram_sync_schedule.sql`.
+To run a sync straight away, open **Edge Functions → sync-instagram → Test** and send a request to `?force=1`.
+
+Linking a creator to a rate card: in **Table Editor → creators**, the rate card creators already have their
+`username` set. For a new creator, add the 12 prices in the `rates` column of their row.
+
 ## The rate card format
 
 Each creator has 12 prices (BD), in this order:
